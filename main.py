@@ -1,6 +1,6 @@
 import random
 
-from bke import MLAgent, RandomAgent, is_winner, opponent, train_and_plot
+from bke import MLAgent, RandomAgent, is_winner, opponent, train_and_plot, start, load
 
 
 class MyAgent(MLAgent):
@@ -14,6 +14,11 @@ class MyAgent(MLAgent):
         return reward
  
 random.seed(1)
+
+my_agent = load('MyAgent_3000') 
+my_agent.learning = False
+ 
+start(player_x=my_agent)
  
 my_agent = MyAgent(alpha=0.8, epsilon=0.2)
 random_agent = RandomAgent()
@@ -25,4 +30,3 @@ train_and_plot(
     trainings=100,
     validations=1000)
 
-start(player_x= MyAgent)

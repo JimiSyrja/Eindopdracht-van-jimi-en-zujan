@@ -1,6 +1,8 @@
 import random
-from bke import MLAgent, is_winner, opponent, RandomAgent, train_and_plot
- 
+
+from bke import MLAgent, RandomAgent, is_winner, opponent, train_and_plot
+
+
 class MyAgent(MLAgent):
     def evaluate(self, board):
         if is_winner(board, self.symbol):
@@ -13,5 +15,14 @@ class MyAgent(MLAgent):
  
 random.seed(1)
  
-my_agent = MyAgent()
+my_agent = MyAgent(alpha=0.8, epsilon=0.2)
 random_agent = RandomAgent()
+
+train_and_plot(
+    agent=my_agent,
+    validation_agent=random_agent,
+    iterations=50,
+    trainings=100,
+    validations=1000)
+
+start(player_x= MyAgent)

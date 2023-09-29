@@ -84,7 +84,7 @@ def slimtegen():
 def plot():
   random.seed(1)
  
-  my_agent = MyAgent(alpha=0.8, epsilon=0.2)
+  my_agent = MyAgent(alpha=0.1, epsilon=0.5)
   #Alpha en epsilon zijn hyperparameters. Met alpha kan je bepalen hoe snel de agent zijn nieuwe kennis gebruikt en zijn oude kennis daarmee vervangt. Met epsilon kan je bepalen hoe vaak de agent een nieuwe strategie probeert in plaats van de beste strategie die hij al kent. Voor beide hyperparameters kan je een getal invullen van 0 tot 1. Hoe hoger het getal voor alpha hoe vaker hij zijn oude kennis zal vervangen. Hoe hoger het getal voor epsilon, hoe vaker hij een nieuwe strategie zal proberen.
 
   print("De grafiek wordt gemaakt, bedankt voor het spelen!")

@@ -1,5 +1,20 @@
 import random
-from bke import start, EvaluationAgent, MLAgent, is_winner, opponent, train, save, load, RandomAgent, train_and_plot
+
+from bke import (
+    EvaluationAgent,
+    MLAgent,
+    RandomAgent,
+    is_winner,
+    load,
+    opponent,
+    plot_validation,
+    save,
+    start,
+    train,
+    train_and_plot,
+    validate,
+)
+
 
 class MyRandomAgent(EvaluationAgent):
     def evaluate(self, board, my_symbol, opponent_symbol):
@@ -84,7 +99,7 @@ def slimtegen():
 def plot():
   random.seed(1)
  
-  my_agent = MyAgent(alpha=0.1, epsilon=0.5)
+  my_agent = MyAgent(alpha=0.95, epsilon=0.01)
   #Alpha en epsilon zijn hyperparameters. Met alpha kan je bepalen hoe snel de agent zijn nieuwe kennis gebruikt en zijn oude kennis daarmee vervangt. Met epsilon kan je bepalen hoe vaak de agent een nieuwe strategie probeert in plaats van de beste strategie die hij al kent. Voor beide hyperparameters kan je een getal invullen van 0 tot 1. Hoe hoger het getal voor alpha hoe vaker hij zijn oude kennis zal vervangen. Hoe hoger het getal voor epsilon, hoe vaker hij een nieuwe strategie zal proberen.
 
   print("De grafiek wordt gemaakt, bedankt voor het spelen!")
@@ -93,9 +108,17 @@ def plot():
   train_and_plot(
       agent=my_agent,
       validation_agent=random_agent,
-      iterations=50,
-      trainings=100,
+      iterations=100,
+      trainings=200,
       validations=1000)
+  # de agent wordt hier getraind
+
+  validation_agent = RandomAgent()
+
+  validation_result = validate(agent_x=my_agent, agent_o=validation_agent, iterations=100)
+    # laat de agent tegen een randon agent spelen
+  
+  plot_validation(validation_result)
   again()
 
 menu()

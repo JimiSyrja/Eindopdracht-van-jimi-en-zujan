@@ -1,29 +1,7 @@
-import random
-from bke import MLAgent, is_winner, opponent, RandomAgent, train_and_plot
-
-
 # import random
 
-# from bke import EvaluationAgent,MLAgent, RandomAgent, is_winner, can_win, opponent, train_and_plot, start, load
+# from bke import MLAgent, is_winner, opponent, train_and_plot
 
-
-# class MyRandomAgent(EvaluationAgent):
-#     def evaluate(self, board, my_symbol, opponent_symbol):
-#         return random.randint(1, 500)
-
-# class MijnSpeler(EvaluationAgent):
-#     def evaluate(self, board, my_symbol, opponent_symbol):
-#         getal = 1
-#         if board[4] == my_symbol:
-#             getal = getal + 5
-#         return getal
-
-# class MijnSpeler2(EvaluationAgent):
-#     def evaluate(self, board, my_symbol, opponent_symbol):
-#         getal = 1
-#         if can_win(board, opponent_symbol):
-#             getal = getal - 1000
-#         return getal
 
 # class MyAgent(MLAgent):
 #     def evaluate(self, board):
@@ -36,49 +14,33 @@ from bke import MLAgent, is_winner, opponent, RandomAgent, train_and_plot
 #         return reward
  
 # random.seed(1)
+
+# # my_agent = load('MyAgent_3000') 
+# # my_agent.learning = False
   
+# my_agent = MyAgent(alpha=0.03, epsilon=0.5)
+# # random_agent = RandomAgent()
 
 # train_and_plot(
-#     agent=MyAgent,
-#     validation_agent=RandomAgent,
+#     agent=my_agent,
+#     validation_agent=my_agent,
 #     iterations=50,
 #     trainings=100,
-#     validations=1000)
+#     validations=1000,
+# )
 
+# from bke import start
+
+# start(player_x=my_agent)
+
+
+import random
  
-# while True:
-#     print("Kies een optie:")
-#     print("1. Speel tegen willekeurig persoon")
-#     print("2. Speel tegen een domme agent")
-#     print("3. Speel tegen een slimme agent")
-#     print("4. Optie 4")
-    
-#     keuze = input("Voer het nummer van uw keuze in: ")
-#     keuze = int(keuze)
-    
-#     if keuze == 1:
-#         my_random_agent = MyRandomAgent()
-#         start(player_x=my_random_agent)
-#     elif keuze == 2:
-#        mijn_speler = MijnSpeler()
-#        start(player_o=mijn_speler, player_x=mijn_speler)
-#        pass
-#     elif keuze == 3:
-#        mijn_speler = MijnSpeler2()
-#        start(player_o=mijn_speler, player_x=mijn_speler)
-#        pass
-#     elif keuze == 4:
-#       my_agent = MyAgent(alpha=0.8, epsilon=0.2)
-#       random_agent = RandomAgent()
-#       start(player_x=my_agent)
-#       pass
+from bke import start, EvaluationAgent, MLAgent, is_winner, opponent, train, save, RandomAgent, load, train_and_plot
 
-
-
-
-
-
-
+class MyRandomAgent(EvaluationAgent):
+    def evaluate(self, board, my_symbol, opponent_symbol):
+        return random.randint(1, 500)
 
 class MyAgent(MLAgent):
     def evaluate(self, board):
@@ -89,26 +51,92 @@ class MyAgent(MLAgent):
         else:
             reward = 0
         return reward
+
+#Hoofdmenu + loop om het spel opnieuw te kunnen spelen
+def menu():
+  print()
+  print("Welkom bij boter kaas & eieren!")
+  print("Kies het spel dat je wilt spelen.")
+
+  i = input("""
+            1: Tegen een andere speler spelen
+            2: Tegen een makkelijke tegenstander spelen
+            3: De tegenstander trainen
+            4: Tegen een slimme tegenstander spelen
+            5: De validatie grafiek plotten
+           
+            """)
+
+  if i == "1":
+    anderpersoon()
+
+  if i == "2":
+    domtegen()
+
+  if i == "3":
+    trainen()
+
+  if i == "4":
+    slimtegen()
+
+  if i == "5":
+    plot()
+
+def again():
+  print()
+  again = input("Wil je opnieuw spelen? Toets Ja of Nee    ")
+  if again == "Ja" or again == "ja" or again == "JA":
+        print("")
+        menu()
+
+  else:
+      print()
+      print("Bedankt voor het spelen en tot ziens!")
+      quit()
+
+#Functies van de soorten spellen die je kan spelen;
+
+def anderpersoon():
+  start()
+  again()
+
+def domtegen():
+  my_random_agent = MyRandomAgent()
+  start(player_o=my_random_agent)
+  again()
+
+def trainen():    
+  my_agent = MyAgent()
  
-random.seed(1)
+  train(my_agent, 3000)
+ 
+  save(my_agent, 'MyAgent_3000')
+  print("De speler is getraind! Als je tegen de getrainde speler wilt spelen kies dan voor opnieuw spelen en kies voor spel 4!")
+  print()
+  again()
 
-# my_agent = load('MyAgent_3000') 
-# my_agent.learning = False
-  
-my_agent = MyAgent(alpha=0.9, epsilon=0.8)
-random_agent = RandomAgent()
+def slimtegen():
+  my_agent = load('MyAgent_3000')
+ 
+  my_agent.learning = False
+ 
+  start(player_x=my_agent)
+  again()
 
-train_and_plot(
-    agent=my_agent,
-    validation_agent=random_agent,
-    iterations=50,
-    trainings=1000,
-    validations=1000)
+def plot():
+  random.seed(1)
+ 
+  my_agent = MyAgent(alpha=0.8, epsilon=0.2)
 
-from bke import start
-start(player_x=my_agent)
+  print("De grafiek wordt gemaakt, bedankt voor het spelen!")
+  random_agent = RandomAgent()
+ 
+  train_and_plot(
+      agent=my_agent,
+      validation_agent=random_agent,
+      iterations=50,
+      trainings=100,
+      validations=1000)
+  again()
 
-
-
-
-
+menu()

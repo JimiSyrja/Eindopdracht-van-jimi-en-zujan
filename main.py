@@ -1,5 +1,5 @@
 import random
-from bke import start, EvaluationAgent, MLAgent, is_winner, opponent, train, save, load
+from bke import start, EvaluationAgent, MLAgent, is_winner, opponent, train, save, load, RandomAgent, train_and_plot
 
 class MyRandomAgent(EvaluationAgent):
     def evaluate(self, board, my_symbol, opponent_symbol):
@@ -25,7 +25,8 @@ def menu():
                 1: Tegen een andere speler spelen
                 2: Tegen een makkelijke tegenstander spelen
                 3: De tegenstander trainen
-                4: Tegen een slimme tegenstander spelen           
+                4: Tegen een slimme tegenstander spelen    
+                5: De validatie grafiek plotten
                 """)
 
     if i == "1":
@@ -39,6 +40,10 @@ def menu():
 
     if i == "4":
         slimtegen()
+    
+    if i == "5":
+        plot()
+
 
 def again():
     print()
@@ -51,8 +56,8 @@ def again():
         print("Bedankt voor het spelen en tot ziens!")
         quit()
 
-# Functies van de soorten spellen die je kan spelen;
 
+# Functies van de soorten spellen die je kan spelen;
 def anderpersoon():
     start()
     again()
@@ -66,7 +71,7 @@ def trainen():
     my_agent = MyAgent()
     train(my_agent, 3000)
     save(my_agent, 'MyAgent_3000')
-    print("De speler is getraind! Als je tegen de getrainde speler wilt spelen kies dan voor opnieuw spelen en kies voor spel 4!")
+    print("De speler is getraind! Als je tegen de getrainde speler wilt                 spelen kies dan voor opnieuw spelen en kies voor spel 4!")
     print()
     again()
 
@@ -75,5 +80,22 @@ def slimtegen():
     my_agent.learning = False
     start(player_x=my_agent)
     again()
+
+def plot():
+  random.seed(1)
+ 
+  my_agent = MyAgent(alpha=0.8, epsilon=0.2)
+  #Alpha en epsilon zijn hyperparameters. Met alpha kan je bepalen hoe snel de agent zijn nieuwe kennis gebruikt en zijn oude kennis daarmee vervangt. Met epsilon kan je bepalen hoe vaak de agent een nieuwe strategie probeert in plaats van de beste strategie die hij al kent. Voor beide hyperparameters kan je een getal invullen van 0 tot 1. Hoe hoger het getal voor alpha hoe vaker hij zijn oude kennis zal vervangen. Hoe hoger het getal voor epsilon, hoe vaker hij een nieuwe strategie zal proberen.
+
+  print("De grafiek wordt gemaakt, bedankt voor het spelen!")
+  random_agent = RandomAgent()
+ 
+  train_and_plot(
+      agent=my_agent,
+      validation_agent=random_agent,
+      iterations=50,
+      trainings=100,
+      validations=1000)
+  again()
 
 menu()
